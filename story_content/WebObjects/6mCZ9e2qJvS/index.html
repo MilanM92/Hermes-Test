@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script
+
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+
+      integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+
+      crossorigin="anonymous"
+
+      referrerpolicy="no-referrer"
+
+    ></script>
+
+    <title>Global  Score Report</title>
+    <style>
+        html {
+      overflow-x: hidden;
+    }
+
+    * {
+      font-family: 'Open Sans', sans-serif;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact !important;   /* Chrome, Safari 6 – 15.3, Edge */
+      color-adjust: exact !important;                 /* Firefox 48 – 96 */
+      print-color-adjust: exact !important;           /* Firefox 97+, Safari 15.4+ */
+    }
+    @font-face {
+      font-family: 'Courier New';
+      src: url('fonts/courier-new.ttf') format('truetype'); /* Update the path and format */
+      font-weight: normal;
+      font-style: normal;
+}
+    .title {
+      text-align: center;
+      font-size: 30px;
+      padding: 2%;
+      background-color: #f6f1eb;
+      background-image: url("img/pdf.png");
+      background-repeat: no-repeat;
+      background-position: bottom right;
+      font-family: 'Courier New', monospace;
+    }
+
+    .title1 {
+      text-align: center;
+      font-size: 30px;
+      padding: 2%;
+      background-color: #f6f1eb;
+      font-family: 'Courier New', monospace;
+      margin-left: 0px;
+    }
+    .title2 {
+      text-align: center;
+      font-size: 30px;
+      padding: 2%;
+      background-color: #f6f1eb;
+      font-family: 'Courier New', monospace;
+      margin-left: 0px;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 3vh;
+      padding: 2%;
+      background-image: url("img/footer1.png");
+      background-repeat: no-repeat;
+      background-position: right bottom;
+      padding-top: 23vh;
+      /* You can adjust this value as needed */
+    }
+
+    .storename,
+    .certifiedsmartops,
+    .dateofcertification,
+    .storedirector,
+    .opsmanager,
+    .retailopsmanager,
+    .ratioo {
+      width: 170px;
+    }
+
+    .store-name,
+    .certified-smartops,
+    .date-of-certification,
+    .store-director,
+    .ops-manager,
+    .retail-ops-manager,
+    .ratio {
+      display: flex;
+      height: 30px;
+      align-items: center;
+
+
+    }
+
+    .certified-smartops,
+    .date-of-certification,
+    .store-director,
+    .ops-manager,
+    .retail-ops-manager,
+    .store-name {
+      border-bottom: 1px solid;
+    }
+
+    .colors {
+      display: grid;
+      grid-template-columns: 54% 31% 15%;
+    }
+
+    .result_colors {
+      margin-top: 5em;
+    }
+
+    .rec {
+      height: 102px;
+      color: white;
+    }
+
+    .pink {
+      background-color: #be2e76;
+    }
+
+    .green {
+      background-color: #267f79;
+    }
+
+    .yellow {
+      background-color: #f3850d;
+    }
+
+    .pink1 {
+      color: #be2e76;
+    }
+
+    .green1 {
+      color: #267f79;
+    }
+
+    .disabled {
+      color: #808080;
+    }
+
+    .triangle {
+      display: flex;
+      align-items: center;
+      width: 0;
+      height: 0;
+      border-left: 60px solid transparent;
+      border-right: 60px solid transparent;
+      border-top: 60px solid gray;
+      position: relative;
+      color: white;
+      justify-content: center;
+    }
+
+    .triangle span {
+      position: absolute;
+      top: -50px;
+      color: white;
+    }
+
+    .scale {
+      --translateX: 0px;
+      width: 100%;
+      transform: translateX(var(--translateX));
+      transition: transform 1s ease-in;
+    }
+
+    .section {
+      padding-left: 4%;
+      justify-content: left;
+      width: 43%;
+      height: 250px;
+      font-size: 14px;
+    }
+
+    .result_colors {
+      margin-top: 300px;
+    }
+
+    .stores {
+
+      padding-top: 5%;
+      width: 20%;
+      float: left;
+      display: grid;
+      align-items: center;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(5, 1fr);
+      gap: 1.5em;
+
+    }
+.disabled {
+    color: #808080; /* Yellow color */
+     /* Optional: Making the text bold */
+}
+    .line {
+      background-color: #d9d9d9;
+      height: 1em;
+      width: 4em;
+      border-radius: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .circle_yes,
+    .circle_no {
+      background-color: transparent;
+      height: 2em;
+      width: 2em;
+      border-radius: 50vh;
+    }
+
+    .circle_yes.selected {
+      background-color: #e0d1be;
+    }
+
+    .circle_no.selected {
+      background-color: #464646;
+      ;
+    }
+
+    .questions {
+      align-self: start;
+      max-width: 90%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(5, 1fr);
+      row-gap: 1em;
+      column-gap: 2em;
+      margin-left: 10%;
+      margin-right: 10%;
+      font-size: 13px;
+
+    }
+
+    .answerYes,
+    .answerNo {
+      background-color: #f6f1eb;
+      color: #464646;
+      padding: 0.2em 1.5em;
+      border-radius: 0.5em;
+    }
+    
+    .answerYes.selected {
+      background-color: black;
+      color: white;
+    }
+
+    /*.question.selected {
+      font-weight: bold;
+    }*/
+
+    .answerNo.selected {
+      background-color: black;
+      color: white;
+    }
+
+    .answers {
+      display: flex;
+      gap: 1em;
+      margin-top: 1em;
+    }
+
+    .store_info {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .results {
+      flex: 1;
+      padding-left: 4%;
+    }
+
+    .textresults {
+      font-size: 16px;
+    }
+
+    .parent {
+      display: flex;
+      padding-top: 2%;
+
+    }
+    .parent1 {
+      display: flex;
+      padding-top: 10%;
+  justify-content: center;
+  height: 100vh;
+    }
+
+    .obtained_global_score {
+      display: flex;
+      padding-top: 2%;
+      height: 100px;
+    }
+
+    .ogs {
+      background-color: #F6F1EB;
+      width: 71%;
+      display: flex;
+      align-items: center;
+      font-size: 20px;
+      padding-left: 3%;
+    }
+
+    .cell1,
+    .cell2,
+    .cell3,
+    .cell4,
+    .cell5,
+    .cell6 {
+      background-color: #F6F1EB;
+      width: 33%;
+      float: left;
+      margin-bottom: 1%;
+      vertical-align: middle;
+      display: flex;
+      height: 70px;
+      align-items: center;
+      padding-left: 2%;
+
+    }
+
+    .parent2 {
+      padding-top: 1%;
+    }
+
+    .cell7 {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .cel7 {
+      background-color: #fff;
+      width: 60%;
+      display: flex;
+      float: left;
+      height: auto;
+    }
+
+    body>div.parent>div.results>div.obtained_global_score>h2:nth-child(2) {
+      background-color: #E9DDCF;
+      width: 22%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+    }
+
+    body>div.parent>div.results>div.parent2>div.cel1>div:nth-child(2) {
+      background-color: #E9DDCF;
+      width: 13%;
+      float: left;
+      margin-right: 1%;
+      display: flex;
+      height: 70px;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    body>div.parent>div.results>div.parent2>div.cel2>div:nth-child(2) {
+      background-color: #E9DDCF;
+      width: 13%;
+      float: left;
+      margin-right: 1%;
+      display: flex;
+      height: 70px;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    body>div.parent>div.results>div.parent2>div.cel3>div:nth-child(2) {
+      background-color: #E9DDCF;
+      width: 13%;
+      float: left;
+      margin-right: 1%;
+      display: flex;
+      height: 70px;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    body>div.parent>div.results>div.parent2>div.cel4>div:nth-child(2) {
+      background-color: #E9DDCF;
+      width: 13%;
+      float: left;
+      margin-right: 1%;
+      display: flex;
+      height: 70px;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    body>div.parent>div.results>div.parent2>div.cel5>div:nth-child(2) {
+      background-color: #E9DDCF;
+      width: 13%;
+      float: left;
+      margin-right: 1%;
+      display: flex;
+      height: 70px;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    body>div.parent>div.results>div.parent2>div.cel6>div:nth-child(2) {
+      background-color: #E9DDCF;
+      width: 13%;
+      float: left;
+      margin-right: 1%;
+      display: flex;
+      height: 70px;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    body > div.parent > div.section > div.onmichannel > div > div > div > div:nth-child(4) {
+      width: 190px;
+    }
+
+    span {
+      color: #969696;
+    }
+
+    .main {
+      margin-top: 3%;
+    }
+
+    h1 {
+      font-size: 20px;
+    }
+
+    .onmichannel {
+      padding-top: 5%;
+    }
+
+    .label {
+      float: left;
+      padding-top: 5%;
+    }
+
+    .pink,
+    .yellow,
+    .green {
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      font-size: 14px;
+    }
+    .date{
+      font-size: 16px;
+      color: black !important;
+    }
+    @page {
+    size: landscape;
+  }
+  @media print {
+  .title1,
+  .title2,
+  .title3 {
+    page-break-before: always;
+  }
+  .questions{
+    font-size: 20px;
+  }
+
+}
+.answerYes.disabled,
+    .answerNo.disabled {
+      background-color: #E0E0E0;
+      color: #A6A6A6;
+      padding: 0.2em 1.5em;
+      border-radius: 0.5em;
+    }
+    @media (max-width: 1100px){
+      .section{
+        font-size: 14px;
+      }
+    }
+    @media (max-width: 1000px){
+      .title{
+        font-size: 30px;
+      }
+    }
+    @media (max-width: 920px){
+      .title{
+        font-size: 30px;
+      }
+      .section{
+        font-size: 12px;
+      }
+    }
+    #element > div.main > div.questions > div:nth-child(17){
+      margin-top: 90px;
+    }
+    #element > div.main > div.questions > div:nth-child(18){
+      margin-top: 90px;
+    }
+  </style>
+</head>
+
+<body id="element">
+    <div class="title" id="title">DiagStore<br>Global Score Report<br><span class="date"></span></div>
+    <div class="parent">
+        <div class="section">
+            <p class="store_info">Store's information</p>
+            <div class="store-name">
+                <p class="storename">Store name</p>
+            </div>
+            <div class="certified-smartops">
+                <p class="certifiedsmartops">Certified SmartOps</p>
+            </div>
+            <div class="date-of-certification">
+                <p class="dateofcertification">Date of certification</p>
+            </div>
+            <div class="store-director">
+                <p class="storedirector">Store director's name</p>
+            </div>
+            
+            <div class="ratio">
+                <p class="ratioo">FTE Ratio OPS/Store</p>
+            </div>
+            <div class="onmichannel">
+                <h1>Omnichannel services</h1>
+                <div class="store1">
+                    <div class="store">
+                        <div class="stores">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="results">
+            <p class="textresults"></p>
+            <div class="obtained_global_score">
+                <h2 class="ogs">Global Score Obtained</h2>
+            </div>
+            <div class="parent2">
+                <div class="cel1">
+                    <div class="cell1">
+                        <p>Stock Accuracy<br><span>YTD</span></p>
+                    </div>
+                </div>
+                <div class="cel2">
+                    <div class="cell2">Process & Tools</div>
+                </div>
+                <div class="cel3">
+                    <div class="cell3">
+                        <p>Stock on Hold<br><span>Today</span></p>
+                    </div>
+                </div>
+                <div class="cel4">
+                    <div class="cell4">Space & Organisation</div>
+                </div>
+                <div class="cel5">
+                    <div class="cell5">
+                        <p>RDI/CDI Conversion Rate<br><span>YTD</span></p>
+                    </div>
+                </div>
+                <div class="cel6">
+                    <div class="cell6">Roles & Responsibilities</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="result_colors">
+        <div class="scale">
+            <div class="triangle"></div>
+        </div>
+        <div class="colors">
+            <div class="rec pink">
+                SmartOps
+                <br />
+                Learner
+            </div>
+            <div class="rec yellow">
+                SmartOps
+                <br />
+                Promoter
+            </div>
+            <div class="rec green">
+                SmartOps
+                <br />
+                Ambassador
+            </div>
+        </div>
+    </div>
+    
+    <div class="title2" id="title2">Your Answers</div>
+    <div class="main">
+        <div class="questions"></div>
+        <div class="no"></div>
+        <div class="footer"></div>
+    </div>
+    <script type="text/javascript">
+    /*Get elements for DOM */
+    let store_name = document.querySelector('.store-name')
+    let certified_smartops = document.querySelector('.certified-smartops')
+    let date_of_certification = document.querySelector('.date-of-certification')
+    let date_automatically = document.querySelector('.date')
+    let store_director = document.querySelector('.store-director')
+    
+    let ratio1 = document.querySelector('.ratio')
+    let cel_1 = document.querySelector('.cel1')
+    let cel_2 = document.querySelector('.cel2')
+    let cel_3 = document.querySelector('.cel3')
+    let cel_4 = document.querySelector('.cel4')
+    let cel_5 = document.querySelector('.cel5')
+    let cel_6 = document.querySelector('.cel6')
+    let cel_7 = document.querySelector('.cel7')
+    let obtained_global_score = document.querySelector(
+        '.obtained_global_score',
+    )
+    let triangle = document.querySelector('.triangle')
+    let scale = document.querySelector('.scale')
+    let textresults = document.querySelector('.textresults')
+    let questions = document.querySelector('.questions')
+    let stores = document.querySelector('.stores')
+    let no = document.querySelector('.no')
+
+    /*Get elements from localStorage */
+    let storeName = localStorage.getItem('storeName')
+    let certifiedSmartops = localStorage.getItem('certifiedsmartops')
+    let dateofcertification = localStorage.getItem('dateofcertification')
+    let dateautomatically = localStorage.getItem('date')
+    let storedirector = localStorage.getItem('storedirector')
+    
+    let ratiO = localStorage.getItem('ratio')
+    let cel1 = localStorage.getItem('stockacurracy')
+    let cel2 = localStorage.getItem('resultsOrange')
+    let cel3 = localStorage.getItem('stockonhold')
+    let cel4 = localStorage.getItem('resultsPink')
+    let cel5 = localStorage.getItem('conversionrate')
+    let cel6 = localStorage.getItem('resultsBlue')
+    
+
+    let globalScore = localStorage.getItem('globalScore')
+
+
+    /*Create dynamic elements based on value from local storage*/
+    let a = document.createElement('p')
+    a.innerHTML = `${storeName}`
+    store_name.appendChild(a)
+
+    let o = document.createElement('p')
+    o.innerHTML = `${certifiedSmartops}`
+    certified_smartops.appendChild(o)
+
+    let p = document.createElement('p')
+    p.innerHTML = `${dateofcertification}`
+    date_of_certification.appendChild(p)
+
+    let q = document.createElement('p')
+    q.innerHTML = `${ratiO}` + '%'
+    ratio1.appendChild(q)
+
+    let b = document.createElement('p')
+    b.innerHTML = `${storedirector}`
+    store_director.appendChild(b)
+
+    
+
+    let e = document.createElement('div')
+    e.innerHTML = `${cel1}` + '%'
+    cel_1.appendChild(e)
+
+    let f = document.createElement('div')
+    f.innerHTML = `${cel2}` + '%'
+    cel_2.appendChild(f)
+
+    let g = document.createElement('div')
+    g.innerHTML = `${cel3}` + '%'
+    cel_3.appendChild(g)
+
+    let h = document.createElement('div')
+    h.innerHTML = `${cel4}` + '%'
+    cel_4.appendChild(h)
+
+    let l = document.createElement('div')
+    l.innerHTML = `${cel5}` + '%'
+    cel_5.appendChild(l)
+
+    let m = document.createElement('div')
+    m.innerHTML = `${cel6}` + '%'
+    cel_6.appendChild(m)
+
+   
+
+    let z = document.createElement('p')
+    z.innerHTML = `${dateautomatically}`
+    date_automatically.appendChild(z)
+
+
+
+
+
+    /*Get result from localStorage to be a number and to be appened to global score*/
+    let result = Number(globalScore);
+    /*Round to 1 decimal place
+    let result =  Number(globalScore).toFixed(1);
+    */
+    let h2 = document.createElement('h2')
+    h2.innerHTML = `${result}%`
+    obtained_global_score.appendChild(h2)
+
+    /*add that number to triangle*/
+    let span = document.createElement('span')
+    span.innerHTML = `${result}%`
+    triangle.appendChild(span)
+
+    /*Get values based on global score and add to DOM*/
+    if (globalScore <= 50) {
+        textresults.innerHTML =
+            '<b><span style="color: #BE2E76; font-size:20px"">SmartOps level: LEARNER</span></b>  <br />The store has few or some basic knowledge of the <br>SmartOps rules and guidelines.';
+    } else if (globalScore > 50 && globalScore <= 85) {
+        textresults.innerHTML =
+            '<b><span style="color: #F4952B; font-size:20px">SmartOps level: PROMOTER</span></b>  <br />The store has pretty good basis of the SmartOps<br> rules and guidelines.'
+    } else if (globalScore > 85 && globalScore <= 100) {
+        textresults.innerHTML =
+            '<b><span style="color: #267F79; font-size:20px">SmartOps level: AMBASSADOR</span></b>  <br />The store has a good operational level of the <br>SmartOps rules and guidelines. '
+    }
+    /*Have animation on trinagle to translate X depending on global score*/
+    setTimeout(function() {
+        if (globalScore >= 93 && globalScore <= 94){
+          scale.style.setProperty('--translateX', globalScore * 0.44 + '%')
+        }
+        else if (globalScore >= 95 && globalScore <= 96){
+          scale.style.setProperty('--translateX', globalScore * 0.43 + '%')
+        }
+        else if (globalScore >= 97 && globalScore <= 98){
+          scale.style.setProperty('--translateX', globalScore * 0.42 + '%')
+        }
+        else if (globalScore >= 99 && globalScore <= 100){
+          scale.style.setProperty('--translateX', globalScore * 0.415 + '%')
+        }
+        else
+        {
+        scale.style.setProperty('--translateX', globalScore * 0.455 + '%')
+    }}, 100)
+
+    /*Getting numbers for taking dynamicly questions from array*/
+    let num = 0
+    let number = 0
+    let num_1 = 0
+    let number_1 = 1
+    let number_2 = 1
+    /*Get all array to be globaly acessed*/
+    const answers = []
+    const buttonsNo = []
+    const buttonsYes = []
+    const buttonStore_yes = []
+    const buttonStore_no = []
+    const questionsArray = []
+    const storeArray = []
+    const storesanswerArray = []
+    const storeAns = [];
+
+    /*Function to get question from local storage and to get them dynamicly displayed in PDF*/
+    function qetQuestions() {
+        //Get questions from local storage
+        let q = localStorage.getItem(`Q${num}`)
+        num++
+        /*if question has value than create div for them, add id (Q1), class(question), innerHTML to be value from localStorge*/
+
+        if (num === 18) {
+        let div = document.createElement('div')
+        div.classList.add('title3')  // Add a class for styling or use existing class
+        questions.appendChild(div)
+    }
+
+        if (num === 18) {
+        let div = document.createElement('div')
+        div.classList.add('title3')  // Add a class for styling or use existing class
+        questions.appendChild(div)
+    }   
+        if (num === 18) {
+        let div = document.createElement('div')
+        div.classList.add('title3')  // Add a class for styling or use existing class
+        questions.appendChild(div)
+    }
+        if (num === 18) {
+        let div = document.createElement('div')
+        div.classList.add('title3')  // Add a class for styling or use existing class
+        questions.appendChild(div)
+    }
+        if (num === 18) {
+        let div = document.createElement('div')
+        div.classList.add('title3')  // Add a class for styling or use existing class
+        questions.appendChild(div)
+    }
+
+        if (num === 18) {
+        let div = document.createElement('div')
+        div.classList.add('title3')  // Add a class for styling or use existing class
+        questions.appendChild(div)
+    }
+
+    if (num === 18) {
+        let div = document.createElement('div')
+        div.classList.add('title3')  // Add a class for styling or use existing class
+        questions.appendChild(div)
+    }
+
+        if (num === 18) {
+        let div = document.createElement('div')
+        div.classList.add('title3')  // Add a class for styling or use existing class
+        questions.appendChild(div)
+    }   
+        if (num === 18) {
+        let div = document.createElement('div')
+        div.classList.add('title3')  // Add a class for styling or use existing class
+        questions.appendChild(div)
+    }
+        if (num === 18) {
+        let div = document.createElement('div')
+        div.classList.add('title3')  // Add a class for styling or use existing class
+        questions.appendChild(div)
+    }
+        if (num === 18) {
+        let div = document.createElement('div')
+        div.classList.add('title3')  // Add a class for styling or use existing class
+        questions.appendChild(div)
+    }
+
+        if (num === 18) {
+        let div = document.createElement('div')
+        div.classList.add('title3')  // Add a class for styling or use existing class
+        questions.appendChild(div)
+    }
+        
+        if (q != null) {
+            let div = document.createElement('div')
+            div.innerHTML = `${q}`
+            div.classList.add('question')
+            questions.appendChild(div)
+            questionsArray.push(div)
+            /*same logic goes to answer it is going to create dynamicly answers based on how many question are in localStorge*/
+            let div_0 = document.createElement('div')
+            div_0.classList.add('answers')
+            div.appendChild(div_0)
+
+            let button_1 = document.createElement('span')
+            button_1.innerHTML = `YES`
+            button_1.classList.add('answerYes')
+            div_0.appendChild(button_1)
+            /*This we push in array that we can later add style based on is selected or not*/
+            buttonsYes.push(button_1)
+
+            let button_2 = document.createElement('span')
+            button_2.innerHTML = `NO`
+            button_2.classList.add('answerNo')
+            div_0.appendChild(button_2)
+            /*This we push in array that we can later add style based on is selected or not*/
+            buttonsNo.push(button_2)
+        }
+    }
+    /*This functions get answers true/false answers from localStorge and based if it false add styles to No, if true add styles to Yes*/
+
+    function getAnswer() {
+        let ans
+        /*Get from LocalStorge and push to array to be accesibile for 10 questions if you want more change number 10*/
+        for (let j = 0; j <= 30; j++) {
+            ans = localStorage.getItem(`A${j}`)
+            if (ans != null) {
+                answers.push(ans)
+            }
+        }
+        /*check if answers are true or false for all values in answer array, if it false add class selected to button No, if it is true add styles to button Yes*/
+        for (let k = 0; k <= answers.length; k++) {
+            if (answers[k] == 'false') {
+                buttonsNo[k].classList.add('selected')
+                questionsArray[k].classList.add('selected')
+            }
+            if (answers[k] == 'true') {
+                buttonsYes[k].classList.add('selected')
+            }
+        }
+    }
+
+    /*Same logic as before but now for stores*/
+    function getStores() {
+        /*add here logic for taking names from local storge for stores and how much stores you need, check code for questions
+        NEW CODE */
+        let store = localStorage.getItem(`store${number_1}`)
+        number_1++
+
+
+
+        /*Create line for answers*/
+        let line = document.createElement('div')
+        line.classList.add("line")
+        stores.appendChild(line)
+
+        /*Buttons for yes or no*/
+        let yes = document.createElement('div')
+        yes.classList.add("circle_yes")
+        line.appendChild(yes)
+        buttonStore_yes.push(yes)
+
+        let no = document.createElement('div')
+        no.classList.add("circle_no")
+        line.appendChild(no)
+        buttonStore_no.push(no)
+
+        let n = document.createElement('div')
+        n.innerHTML = `${store}`
+        stores.appendChild(n)
+
+
+    }
+    /*Add all stores from SL, use same logic like for creating questions from SL and from PDF, now it works only for one store*/
+    function getStoreAns() {
+    
+    let k;
+    number_2 = 1;
+
+    for (let k = 0; k <= 4; k++) {
+        storeAns[k] = localStorage.getItem(`storesanswer${number_2}`);
+        number_2++;
+
+        if (storeAns[0] === '1') {
+            buttonStore_no[0].classList.add('selected');
+            
+            
+        }
+        if (storeAns[1] === '1') {
+            buttonStore_no[1].classList.add('selected');
+            
+        }
+        if (storeAns[2] === '1') {
+            buttonStore_no[2].classList.add('selected');
+            
+        }
+        if (storeAns[3] === '1') {
+            buttonStore_no[3].classList.add('selected');
+            
+        }
+        if (storeAns[4] === '1') {
+            buttonStore_no[4].classList.add('selected');
+            
+        }
+        if (storeAns[0] === '0') {
+            buttonStore_yes[0].classList.add('selected');
+            questionsArray[6].classList.add('disabled');
+            buttonsYes[6].classList.add('disabled')
+            buttonsNo[6].classList.add('disabled')
+        }
+        if (storeAns[1] === '0') {
+            buttonStore_yes[1].classList.add('selected');
+            questionsArray[23].classList.add('disabled');
+            buttonsYes[23].classList.add('disabled')
+            buttonsNo[23].classList.add('disabled')
+        }
+        if (storeAns[2] === '0') {
+            buttonStore_yes[2].classList.add('selected');
+            questionsArray[24].classList.add('disabled');
+            buttonsYes[24].classList.add('disabled')
+            buttonsNo[24].classList.add('disabled')
+        }
+        if (storeAns[3] === '0') {
+            buttonStore_yes[3].classList.add('selected');
+            questionsArray[25].classList.add('disabled');
+            buttonsYes[25].classList.add('disabled')
+            buttonsNo[25].classList.add('disabled')
+        }
+        if (storeAns[4] === '0') {
+            buttonStore_yes[4].classList.add('selected');
+            questionsArray[26].classList.add('disabled');
+            buttonsYes[26].classList.add('disabled')
+            buttonsNo[26].classList.add('disabled')
+        }
+    }
+}
+
+
+    /*Function declartion*/
+    for (let i = 0; i <= 30; i++) {
+        qetQuestions()
+    }
+
+
+    getAnswer()
+    for (let j = 0; j <= 4; j++) {
+        getStores()
+    }
+
+    getStoreAns()
+
+
+
+    /*Print PDF*/
+setTimeout(function(){
+
+     var element = document.getElementById('element');
+
+html2pdf(element,{
+            margin: [0.5, 0, 0.5, 0.5],
+            filename: "Global Score Report.pdf",
+            image: { type: "png", quality: 0.98 },
+            html2canvas: { scale: 2, letterRendering: true },
+            pagebreak: { mode: 'avoid-all', before: '#title2' },
+            jsPDF: { unit: "em", format: "A4", orientation: "portrait" }
+    })},1000);
+     
+/*function addScript(url) {
+     var script = document.createElement('script');
+     script.type = 'application/javascript';
+     script.src = url;
+     document.head.appendChild(script);
+ }
+ addScript('https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');
+setTimeout(function(){ html2pdf(document.body);}, 3000);*/
+    </script>
+</body>
+
+</html>
